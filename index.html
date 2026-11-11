@@ -227,35 +227,35 @@
   <p class="small">All results on this page will be included in the revised manuscript.</p>
 
   <h2 id="mip">Mipmapping of the texture atlas</h2>
-  <p class="req">Requested by the reviewers: the viewer with a mip chain on the atlas. Each bundle below is the paper's model plus six box-filtered coarser levels of every surfel tile, down to one texel. The cards open in the <b>anisotropic</b> mode. The pane's <b>Atlas mips</b> selector switches between <b>off</b> (level 0 bilinear, the paper's renderer), <b>trilinear</b> (per-pixel fractional level from the texel footprint, blended between adjacent levels), <b>bias 0 / 1 / 2</b> (one integer level per surfel, zero, one or two levels sharper than the footprint) and <b>anisotropic</b> (trilinear plus up to 16 taps along the long axis). Judge in motion: orbit slowly over the floor or the lawn and toggle. Needs WebGPU (Chrome or Edge 113+ on a laptop or desktop).</p>
+  <p class="req">Each bundle is the paper's model plus six box-filtered coarser levels of every surfel tile, down to one texel, with no retraining. The viewer opens with anisotropic mipmapping on: each pixel samples the atlas at the level of its own texel footprint, with up to 16 taps along the long axis. The <b>Mipmaps</b> toggle in the panel switches back to level 0, the renderer used for the paper's results. Orbit slowly over the floor or the lawn and toggle to compare. Needs WebGPU: Chrome or Edge 113+ on a laptop or desktop.</p>
   <figure>
     <div class="demogrid">
       <a class="demolink" href="viewer/index.html?bundle=../bundles/garden_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/garden.jpg" alt="Garden with the atlas mip chain">
         <div class="dl-body">
           <div class="dl-title">Garden &middot; mip chain</div>
-          <div class="dl-meta">66&nbsp;MB &middot; +14 MB of levels &middot; opens anisotropic</div>
+          <div class="dl-meta">66&nbsp;MB &middot; +14 MB of levels</div>
         </div>
       </a>
       <a class="demolink" href="viewer/index.html?bundle=../bundles/room_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/room.jpg" alt="Room with the atlas mip chain">
         <div class="dl-body">
           <div class="dl-title">Room &middot; mip chain</div>
-          <div class="dl-meta">21&nbsp;MB &middot; +4 MB of levels &middot; opens anisotropic</div>
+          <div class="dl-meta">21&nbsp;MB &middot; +4 MB of levels</div>
         </div>
       </a>
       <a class="demolink" href="viewer/index.html?bundle=../bundles/truck_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/truck.jpg" alt="Truck with the atlas mip chain">
         <div class="dl-body">
           <div class="dl-title">Truck &middot; mip chain</div>
-          <div class="dl-meta">36&nbsp;MB &middot; +8 MB of levels &middot; opens anisotropic</div>
+          <div class="dl-meta">36&nbsp;MB &middot; +8 MB of levels</div>
         </div>
       </a>
       <a class="demolink" href="viewer/index.html?bundle=../bundles/drjohnson_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/drjohnson.jpg" alt="Dr Johnson with the atlas mip chain">
         <div class="dl-body">
           <div class="dl-title">Dr Johnson &middot; mip chain</div>
-          <div class="dl-meta">27&nbsp;MB &middot; +6 MB of levels &middot; opens anisotropic</div>
+          <div class="dl-meta">27&nbsp;MB &middot; +6 MB of levels</div>
         </div>
       </a>
     </div>
