@@ -218,6 +218,14 @@
 </header>
 <main class="wrap">
 
+  <h2 id="guide">Where each question is addressed</h2>
+  <ul class="highlights">
+    <li><b>Reviewer STWD</b> (common hardware backend, renderer labels): <a href="#results">HD and 4K on one hardware rasterizer</a>. The per-component speed decomposition and the matched-storage comparison will appear in the revised manuscript.</li>
+    <li><b>Reviewer 7Qhu</b> (lower-tier GPUs and mobile devices): <a href="#laptop">laptop results</a> and the <a href="#demo">interactive demos</a>, which also run on phones with WebGPU.</li>
+    <li><b>Reviewer NcgU</b> (mipmapping, resolutions, GPU classes): <a href="#mip">mip-chain demos</a>, <a href="#results">HD and 4K</a> and <a href="#laptop">laptop results</a>.</li>
+  </ul>
+  <p class="small">All results on this page will be included in the revised manuscript.</p>
+
   <h2 id="mip">Mipmapping of the texture atlas</h2>
   <p class="req">Requested by the reviewers: the viewer with a mip chain on the atlas. Each bundle below is the paper's model plus six box-filtered coarser levels of every surfel tile, down to one texel. The cards open in the <b>anisotropic</b> mode. The pane's <b>Atlas mips</b> selector switches between <b>off</b> (level 0 bilinear, the paper's renderer), <b>trilinear</b> (per-pixel fractional level from the texel footprint, blended between adjacent levels), <b>bias 0 / 1 / 2</b> (one integer level per surfel, zero, one or two levels sharper than the footprint) and <b>anisotropic</b> (trilinear plus up to 16 taps along the long axis). Judge in motion: orbit slowly over the floor or the lawn and toggle. Needs WebGPU (Chrome or Edge 113+ on a laptop or desktop).</p>
   <figure>
@@ -367,9 +375,9 @@
   </table>
   <p class="small">On the hardware rasterizer ours is fastest in every cell and the lead grows with resolution. On the software path our fragment is more expensive (ray/plane hit plus one texture fetch against one Gaussian evaluation), so at 4K the 3DGS-family renderers are ahead there.</p>
 
-  <h3>Apple M3 Pro laptop (WebGPU), frames per second</h3>
+  <h3 id="laptop">Apple M3 Pro laptop (WebGPU), frames per second</h3>
   <!-- LAPTOP_TABLE -->
-  <p class="small">Being re-measured with the revised viewer; this table is filled in when the runs finish.</p>
+  <p class="small">Ours, FastGS and Speedy-Splat through the same WebGPU sort and blend on four scenes at the evaluation resolution, HD and 4K. This table is added in the coming days.</p>
 
 </main>
 <footer class="wrap small" style="padding:2rem 22px; border-top:1px solid var(--line); margin-top:2rem">Anonymous supplement for the ICLR 2027 discussion phase. The page contains no analytics or external scripts.</footer>
