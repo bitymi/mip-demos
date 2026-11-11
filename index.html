@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Bake It Till You Make It — discussion-phase supplement</title>
+<style>
+  :root{
+    --bg:#ffffff; --fg:#1a1a1a; --muted:#5a6472; --line:#e6e8ec;
+    --accent:#c0392b; --accent-soft:#fdecea; --card:#f7f8fa; --link:#b83227;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1116; --fg:#e6e8ec; --muted:#9aa4b2; --line:#232833;
+      --accent:#e8654f; --accent-soft:#2a1512; --card:#161b22; --link:#f0836f;
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65; font-size:18px; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 22px}
+  a{color:var(--link); text-decoration:none}
+  a:hover{text-decoration:underline}
+  h1,h2,h3{line-height:1.2; font-weight:700}
+  h2{font-size:1.6rem; margin:2.6rem 0 1rem; text-align:center}
+  h3{font-size:1.15rem; margin:1.6rem 0 .5rem}
+
+  /* ---------- Hero ---------- */
+  header{padding:3.2rem 0 1.6rem; text-align:center; border-bottom:1px solid var(--line)}
+  .title{font-size:2.5rem; margin:0 0 .2rem}
+  .subtitle{font-size:1.35rem; color:var(--muted); font-weight:600; margin:.2rem 0 1.4rem}
+  .venue{display:inline-block; margin-bottom:1.4rem; font-size:.95rem; color:var(--accent);
+         background:var(--accent-soft); padding:.25rem .7rem; border-radius:999px; font-weight:600}
+  .authors{font-size:1.08rem; margin:.4rem 0}
+  .authors a{color:var(--fg); font-weight:600}
+  .authors sup{color:var(--accent); font-weight:700}
+  .affil{color:var(--muted); font-size:.98rem; margin:.5rem 0 0}
+  .note{color:var(--muted); font-size:.9rem; margin-top:.3rem}
+
+  /* ---------- Link buttons ---------- */
+  .links{display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin:1.6rem 0 .4rem}
+  .btn{display:inline-flex; align-items:center; gap:.45rem; background:var(--fg); color:var(--bg);
+       padding:.55rem 1.1rem; border-radius:999px; font-weight:600; font-size:.98rem; border:1px solid var(--fg)}
+  .btn:hover{opacity:.85; text-decoration:none}
+  .btn.ghost{background:transparent; color:var(--fg); border:1px solid var(--line)}
+  .btn .ico{font-size:1.05rem; line-height:1}
+
+  /* ---------- Figures ---------- */
+  figure{margin:1.4rem 0}
+  figure img[src$=".svg"]{border:0; background:transparent}
+  figure img,video{width:100%; height:auto; border-radius:10px; border:1px solid var(--line); display:block}
+  figcaption{color:var(--muted); font-size:.95rem; margin-top:.6rem; text-align:center}
+  .placeholder{display:flex; align-items:center; justify-content:center; text-align:center;
+    background:var(--card); border:2px dashed var(--line); border-radius:10px;
+    min-height:280px; color:var(--muted); font-size:.95rem; padding:1.4rem}
+
+  /* ---------- Stat row ---------- */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; margin:1.8rem 0}
+  .stat{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem .6rem; text-align:center}
+  .stat .num{font-size:1.7rem; font-weight:800; color:var(--accent); line-height:1.1}
+  .stat .lbl{font-size:.85rem; color:var(--muted); margin-top:.25rem}
+  @media (max-width:640px){ .stats{grid-template-columns:1fr} .title{font-size:2rem} }
+
+  /* ---------- Abstract & body ---------- */
+  .abstract{font-size:1.05rem}
+  .highlights{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:1rem 1.3rem}
+  .highlights li{margin:.5rem 0}
+
+  /* Disabled link-button: same shape as .btn.ghost but visibly inert, used
+     for deliverables that are not published yet (live demos). */
+  .btn.disabled{opacity:.5; cursor:not-allowed; pointer-events:none}
+  .placeholder.tba{font-style:normal}
+  /* ---------- Demo links ---------- */
+  /* Horizontal carousel. Cards are fixed-width flex items that scroll-snap,
+     so any number of demos fits without reflowing the page. */
+  .demogrid{display:flex; gap:.8rem; overflow-x:auto; scroll-snap-type:x mandatory;
+            padding:.2rem .2rem 1rem; margin:0 -.2rem; -webkit-overflow-scrolling:touch;
+            scrollbar-width:thin}
+  .demogrid::-webkit-scrollbar{height:8px}
+  .demogrid::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px}
+  /* flex column + stretch: every card is the same height and the body starts at
+     the same y, so titles and captions line up across cards even when one
+     caption wraps to more lines than another. */
+  .demolink{flex:0 0 clamp(240px, 62vw, 290px); scroll-snap-align:start;
+            display:flex; flex-direction:column;
+            background:var(--card); border:1px solid var(--line); border-radius:12px;
+            overflow:hidden; color:var(--fg); transition:border-color .12s ease, transform .12s ease}
+  .demolink:hover{border-color:var(--accent); transform:translateY(-1px); text-decoration:none}
+  /* Fixed aspect + object-fit:cover so the two thumbnails line up even though
+     they ship at different sizes (garden 400x259, brain 512x512 square). */
+  .dl-thumb{display:block; width:100%; aspect-ratio:16/9; object-fit:cover;
+            border:0; border-radius:0; border-bottom:1px solid var(--line)}
+  .dl-body{padding:.9rem 1.1rem 1.05rem; flex:1}
+  .dl-title{font-weight:700; font-size:1.1rem}
+  .dl-meta{color:var(--muted); font-size:.86rem; margin-top:.2rem}
+  /* ---------- Method comparison player ---------- */
+  /* One <video> per scene holds all three methods as a 2x2 grid (tile 4 empty),
+     so the canvas can draw any mix of them from the SAME decoded frame and the
+     split never drifts out of sync. */
+  .cmp{margin:1.4rem 0 .4rem; outline:none}
+  .cmp-tabs{display:flex; gap:.4rem; justify-content:center; flex-wrap:wrap; margin-bottom:.7rem}
+  .cmp-tab{background:transparent; color:var(--fg); border:1px solid var(--line); border-radius:999px;
+           padding:.3rem 1rem; font:600 .9rem/1.4 inherit; font-family:inherit; cursor:pointer}
+  .cmp-tab:hover{border-color:var(--accent)}
+  .cmp-tab[aria-selected="true"]{background:var(--fg); color:var(--bg); border-color:var(--fg)}
+  .cmp-stage{position:relative; border-radius:10px; overflow:hidden; border:1px solid var(--line);
+             background:#000; touch-action:pan-y; user-select:none; -webkit-user-select:none}
+  .cmp-stage.grab{touch-action:none}
+  .cmp-stage canvas{display:block; width:100%; height:auto}
+  /* kept in the layout (not display:none) so every browser keeps decoding frames */
+  .cmp-stage video{position:absolute; left:0; top:0; width:2px; height:2px; opacity:0; pointer-events:none}
+  .cmp-hint{position:absolute; left:50%; bottom:12px; transform:translateX(-50%);
+            background:rgba(0,0,0,.72); color:#fff; font-size:.82rem; padding:.3rem .8rem;
+            border-radius:999px; pointer-events:none; white-space:nowrap; opacity:0; transition:opacity .2s}
+  .cmp-hint.on{opacity:1}
+  .cmp-bar{display:flex; align-items:center; gap:.5rem; margin-top:.6rem; flex-wrap:wrap}
+  .cmp-btn{display:inline-flex; align-items:center; justify-content:center; gap:.35rem; min-width:2.4rem; height:2.2rem;
+           padding:0 .8rem; background:transparent; color:var(--fg); border:1px solid var(--line);
+           border-radius:999px; font:600 .85rem/1 inherit; font-family:inherit; cursor:pointer}
+  .cmp-btn:hover{border-color:var(--accent)}
+  .cmp-btn[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+  .cmp-btn:disabled{opacity:.4; cursor:default; border-color:var(--line)}
+  .cmp-btn svg{width:15px; height:15px; fill:currentColor}
+  .cmp-scrub{flex:1 1 160px; accent-color:var(--accent); min-width:120px}
+  .cmp-frame{font:500 .82rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; color:var(--muted);
+             min-width:6.2em; text-align:right}
+  /* ---------- Results table ---------- */
+  .restable{width:100%; border-collapse:collapse; font-size:.87rem; margin:.6rem 0 .3rem}
+  .restable th,.restable td{padding:.42em .5em; border-bottom:1px solid var(--line); text-align:left}
+  .restable th{font-weight:600; font-size:.78rem; letter-spacing:.02em; text-transform:uppercase; color:var(--muted)}
+  .restable td.n{text-align:right; font-variant-numeric:tabular-nums}
+  .restable tr.mean td{border-top:2px solid var(--line); border-bottom:none}
+  .restable td.win{color:#1a7f37; font-weight:600}
+  .restable td.loss{color:#b35900; font-weight:600}
+  .tablewrap{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  /* winning value in each metric column: soft tint + bold, so the better
+     number pops without turning the table into a traffic light */
+  /* raised specificity on purpose: a row- or column-level background rule
+     would otherwise out-specify this and silently drop the tint. */
+  .arw{color:var(--muted); font-weight:400; font-size:.9em}
+  /* our row in the full-comparison tables: soft accent tint. Declared BEFORE
+     td.best and kept at equal specificity, so the green winner tint still
+     wins (later rule) on cells that are both. */
+  .restable tr.ours td{background:rgba(192,57,43,.07)}
+  @media (prefers-color-scheme:dark){ .restable tr.ours td{background:rgba(232,101,79,.13)} }
+  /* demarcation line separating Ours from the baselines above it:
+     full-contrast ink (black in light mode, white in dark) */
+  .restable tr.ours td, .restable tr.oursep td{border-top:2px solid var(--fg)}
+  /* two stacked ours rows (HQ variant + main): only the first carries the
+     heavy separator; between them a normal hairline */
+  .restable tr.ours + tr.ours td{border-top:1px solid var(--line)}
+  /* FPS column boxed off: the headline metric gets vertical rules down both
+     sides, capped top and bottom so the column reads as one unit. Declared
+     after the Ours separator so the cap wins on that row's cell. */
+  .restable th.fps, .restable td.fps{border-left:2px solid var(--fg); border-right:2px solid var(--fg)}
+  .restable thead th.fps{border-top:2px solid var(--fg)}
+  .restable tbody tr:last-child td.fps{border-bottom:2px solid var(--fg)}
+  .fullcmp h4{font-size:1rem; margin:1.4rem 0 .3rem; color:var(--muted)}
+  .restable tbody td.best{background:rgba(26,127,55,.10); border-radius:3px}
+  @media (prefers-color-scheme:dark){ .restable tbody td.best{background:rgba(74,194,107,.16)} }
+  /* per-column rank tints in the full-comparison tables (paper convention):
+     red = best, orange = second, yellow = third */
+  .restable tbody td.r1{background:rgba(214,39,40,.24); border-radius:3px}
+  .restable tbody td.r2{background:rgba(255,127,14,.22); border-radius:3px}
+  .restable tbody td.r3{background:rgba(255,221,51,.38); border-radius:3px}
+  @media (prefers-color-scheme:dark){
+    .restable tbody td.r1{background:rgba(255,99,99,.30)}
+    .restable tbody td.r2{background:rgba(255,159,64,.28)}
+    .restable tbody td.r3{background:rgba(255,221,51,.20)}
+  }
+  .sumtable{font-size:.95rem; max-width:640px; margin-left:auto; margin-right:auto}
+  .sumtable td:first-child,.sumtable th:first-child{font-weight:600}
+  .perscene{margin-top:.4rem}
+  .sumtable tr.dstop td{border-top:2px solid var(--line)}
+  /* small gap between dataset groups: a background-coloured border reads as
+     whitespace (border-collapse picks the wider border, replacing the line).
+     :not(:first-child) keeps the header's underline on the first group. */
+  .sumtable tbody tr.dstop:not(:first-child) td{border-top:10px solid var(--bg)}
+  .sumtable td[rowspan]{vertical-align:middle; font-weight:600}
+  .dsn{font-weight:400; font-size:.78rem; color:var(--muted)}
+  #ps-all h4{font-size:1rem; margin:1.4rem 0 .3rem; color:var(--muted)}
+  .tcenter{text-align:center; margin:.2rem 0 .4rem}
+  .toggle{background:transparent; color:var(--link); border:1px solid var(--line);
+          border-radius:999px; padding:.3rem .9rem; font-size:.82rem; font-weight:600;
+          cursor:pointer; font-family:inherit}
+  .toggle:hover{border-color:var(--accent); color:var(--accent)}
+  .tnote{font-size:.82rem; color:var(--muted); line-height:1.5; margin:.5rem 0 0}
+  @media (prefers-color-scheme:dark){ .restable td.win{color:#4ac26b} .restable td.loss{color:#e8a33d} }
+  /* ---------- BibTeX ---------- */
+  pre{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:1rem 1.1rem;
+      overflow-x:auto; font-size:.86rem; line-height:1.5}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  footer{border-top:1px solid var(--line); margin-top:3rem; padding:1.6rem 0 3rem;
+         color:var(--muted); font-size:.9rem; text-align:center}
+</style>
+<style>
+  table.res{width:100%; border-collapse:collapse; font-size:.92rem; margin:1rem 0}
+  table.res th, table.res td{padding:.35rem .5rem; border-bottom:1px solid var(--line); text-align:right; font-variant-numeric:tabular-nums}
+  table.res th:first-child, table.res td:first-child{text-align:left}
+  table.res th{color:var(--muted); font-weight:600}
+  .small{color:var(--muted); font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1 class="title">Bake It Till You Make It</h1>
+    <p class="subtitle">Ultrafast Spatial Texture-Atlas Splatting</p>
+    <p class="anon">Anonymous authors &middot; ICLR 2027 submission &middot; material added during the discussion phase (November 2026)</p>
+    <p class="note">The supplementary demos that accompanied the submission are unchanged at <a href="https://bitymi.github.io/">the original page</a>. This page holds only what was added in response to the reviews. No visitor tracking.</p>
+  </div>
+</header>
+<main class="wrap">
+
+  <h2 id="mip">Mipmapping of the texture atlas</h2>
+  <p class="req">Requested by the reviewers: the viewer with a mip chain on the atlas. Each bundle below is the paper's model plus six box-filtered coarser levels of every surfel tile, down to one texel. The cards open in the <b>anisotropic</b> mode. The pane's <b>Atlas mips</b> selector switches between <b>off</b> (level 0 bilinear, the paper's renderer), <b>trilinear</b> (per-pixel fractional level from the texel footprint, blended between adjacent levels), <b>bias 0 / 1 / 2</b> (one integer level per surfel, zero, one or two levels sharper than the footprint) and <b>anisotropic</b> (trilinear plus up to 16 taps along the long axis). Judge in motion: orbit slowly over the floor or the lawn and toggle. Needs WebGPU (Chrome or Edge 113+ on a laptop or desktop).</p>
+  <figure>
+    <div class="demogrid">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/garden_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/garden.jpg" alt="Garden with the atlas mip chain">
+        <div class="dl-body">
+          <div class="dl-title">Garden &middot; mip chain</div>
+          <div class="dl-meta">66&nbsp;MB &middot; +14 MB of levels &middot; opens anisotropic</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/room_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/room.jpg" alt="Room with the atlas mip chain">
+        <div class="dl-body">
+          <div class="dl-title">Room &middot; mip chain</div>
+          <div class="dl-meta">21&nbsp;MB &middot; +4 MB of levels &middot; opens anisotropic</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/truck_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/truck.jpg" alt="Truck with the atlas mip chain">
+        <div class="dl-body">
+          <div class="dl-title">Truck &middot; mip chain</div>
+          <div class="dl-meta">36&nbsp;MB &middot; +8 MB of levels &middot; opens anisotropic</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/drjohnson_paper_mip.bitymi&amp;mipbias=aniso" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/drjohnson.jpg" alt="Dr Johnson with the atlas mip chain">
+        <div class="dl-body">
+          <div class="dl-title">Dr Johnson &middot; mip chain</div>
+          <div class="dl-meta">27&nbsp;MB &middot; +6 MB of levels &middot; opens anisotropic</div>
+        </div>
+      </a>
+    </div>
+  </figure>
+
+  <h2 id="demo">Interactive demos, revised viewer</h2>
+  <p class="req">The thirteen submission scenes through the revised viewer. The fragment shader is now compiled without the research-only code paths (clip plane, debug views, per-pixel mip modes), which renders the same image and runs 1.3&ndash;1.5&times; faster on an Apple M3 Pro than the viewer used for the submission numbers. Two buttons in the top right toggle the baked <b>Texture</b> and the screen-space <b>Low-pass</b> fallback of the kernel. Bundles are fetched from the original page.</p>
+  <figure>
+    <div class="demogrid">
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/garden_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/garden.jpg" alt="Garden rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Garden</div>
+          <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/bicycle_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/bicycle.jpg" alt="Bicycle rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Bicycle</div>
+          <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/flowers_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/flowers.jpg" alt="Flowers rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Flowers</div>
+          <div class="dl-meta">62&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/stump_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/stump.jpg" alt="Stump rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Stump</div>
+          <div class="dl-meta">32&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/treehill_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/treehill.jpg" alt="Treehill rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Treehill</div>
+          <div class="dl-meta">58&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/room_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/room.jpg" alt="Room rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Room</div>
+          <div class="dl-meta">16&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/counter_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/counter.jpg" alt="Counter rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Counter</div>
+          <div class="dl-meta">17&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/kitchen_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/kitchen.jpg" alt="Kitchen rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Kitchen</div>
+          <div class="dl-meta">24&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/bonsai_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/bonsai.jpg" alt="Bonsai rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Bonsai</div>
+          <div class="dl-meta">22&nbsp;MB &middot; Mip-NeRF 360</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/train_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/train.jpg" alt="Train rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Train</div>
+          <div class="dl-meta">28&nbsp;MB &middot; Tanks &amp; Temples</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/truck_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/truck.jpg" alt="Truck rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Truck</div>
+          <div class="dl-meta">27&nbsp;MB &middot; Tanks &amp; Temples</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/drjohnson_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/drjohnson.jpg" alt="Dr Johnson rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Dr Johnson</div>
+          <div class="dl-meta">20&nbsp;MB &middot; Deep Blending</div>
+        </div>
+      </a>
+      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/playroom_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+        <img class="dl-thumb" loading="lazy" src="static/images/demos/playroom.jpg" alt="Playroom rendered in the browser from the baked texture atlas">
+        <div class="dl-body">
+          <div class="dl-title">Playroom</div>
+          <div class="dl-meta">16&nbsp;MB &middot; Deep Blending</div>
+        </div>
+      </a>
+    </div>
+  </figure>
+
+  <h2 id="results">Added results</h2>
+  <h3>HD and 4K on an RTX 5090, frames per second</h3>
+  <p class="small">Held-out test cameras, SM clock locked at 2.4 GHz. <b>CUDA</b> = each method's own released renderer; <b>HW</b> = the same models through one hardware rasterizer (Vulkan), FastGS and Speedy-Splat with their own bounding boxes. Primitives: ours 63k / 85k / 66k / 149k, FastGS 207k / 253k / 252k / 661k, Speedy-Splat 119k / 257k / 314k / 535k (room / truck / drjohnson / garden). Garden ran at the unlocked clock and reads about 10 % high against the other three scenes.</p>
+  <table class="res">
+    <tr><th>scene</th><th>resolution</th><th>ours CUDA</th><th>FastGS CUDA</th><th>Speedy CUDA</th><th>ours HW</th><th>FastGS HW</th><th>Speedy HW</th></tr>
+    <tr><td>room</td><td>1920×1279</td><td>1287</td><td>1103</td><td>1169</td><td><b>2353</b></td><td>1459</td><td>1167</td></tr>
+    <tr><td>room</td><td>3840×2558</td><td>469</td><td>635</td><td>622</td><td><b>884</b></td><td>485</td><td>358</td></tr>
+    <tr><td>truck</td><td>1920×1070</td><td>990</td><td>1082</td><td>1039</td><td><b>1472</b></td><td>1165</td><td>899</td></tr>
+    <tr><td>truck</td><td>3840×2141</td><td>314</td><td>630</td><td>541</td><td><b>462</b></td><td>405</td><td>296</td></tr>
+    <tr><td>drjohnson</td><td>1920×1262</td><td>1120</td><td>1065</td><td>1055</td><td><b>2654</b></td><td>1706</td><td>1270</td></tr>
+    <tr><td>drjohnson</td><td>3840×2525</td><td>360</td><td>544</td><td>540</td><td><b>895</b></td><td>552</td><td>401</td></tr>
+    <tr><td>garden</td><td>1920×1244</td><td>1052</td><td>932</td><td>826</td><td><b>1918</b></td><td>1108</td><td>950</td></tr>
+    <tr><td>garden</td><td>3840×2488</td><td>384</td><td>590</td><td>504</td><td><b>705</b></td><td>507</td><td>384</td></tr>
+  </table>
+  <p class="small">On the hardware rasterizer ours is fastest in every cell and the lead grows with resolution. On the software path our fragment is more expensive (ray/plane hit plus one texture fetch against one Gaussian evaluation), so at 4K the 3DGS-family renderers are ahead there.</p>
+
+  <h3>Apple M3 Pro laptop (WebGPU), frames per second</h3>
+  <!-- LAPTOP_TABLE -->
+  <p class="small">Being re-measured with the revised viewer; this table is filled in when the runs finish.</p>
+
+</main>
+<footer class="wrap small" style="padding:2rem 22px; border-top:1px solid var(--line); margin-top:2rem">Anonymous supplement for the ICLR 2027 discussion phase. The page contains no analytics or external scripts.</footer>
+</body>
+</html>

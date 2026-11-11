@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>BITYMI viewer</title>
+    <script>
+      /* Every request the viewer makes for its bundle comes through here.
+         - On a GPU without BC7 but with ASTC (phones, tablets) the BC7 bundle is
+           turned into its ASTC twin with a small byte patch (<name>.astcpatch),
+           so no second full copy has to be downloaded.
+         - Opened from a local file, the page may not read its own files, so the
+           bytes come from a file the visitor picks once. */
+      (function () {
+        var want = new URLSearchParams(location.search).get('bundle');
+        if (!want) return;
+        var base = function (u) { return String(u).split('?')[0].split('/').pop(); };
+        var name = base(want), isFile = location.protocol === 'file:', give;
+        var picked = new Promise(function (r) { give = r; });
+        var real = window.fetch.bind(window);
+        // ?astc=1 forces the phone path on any GPU, for testing it from a laptop
+        var forceAstc = new URLSearchParams(location.search).get('astc') === '1';
+        var needAstc = (async function () {
+          if (forceAstc) return true;
+          try {
+            if (!navigator.gpu) return false;
+            var a = await navigator.gpu.requestAdapter();
+            return !!a && !a.features.has('texture-compression-bc') && a.features.has('texture-compression-astc');
+          } catch (e) { return false; }
+        })();
+        function applyPatch(buf, patch) {
+          var dv = new DataView(patch), magic = new TextDecoder().decode(new Uint8Array(patch, 0, 8));
+          if (magic !== 'BTPATCH1') throw new Error('bad ASTC patch');
+          if (dv.getUint32(8, true) !== buf.byteLength) throw new Error('ASTC patch is for a different bundle');
+          var n = dv.getUint32(12, true), out = new Uint8Array(buf), p = 16;
+          for (var k = 0; k < n; k++) {
+            var s = dv.getUint32(p, true), l = dv.getUint32(p + 4, true); p += 8;
+            out.set(new Uint8Array(patch, p, l), s); p += l;
+          }
+          return buf;
+        }
+        window.fetch = function (input, init) {
+          var u = typeof input === 'string' ? input : (input && input.url) || '';
+          var method = ((init && init.method) || (input && input.method) || 'GET').toUpperCase();
+          if (base(u) !== name || method !== 'GET') return real(input, init);
+          return needAstc.then(function (astc) {
+            var bytes = isFile ? picked : real(input, init).then(function (r) {
+              if (!r.ok) throw new Error('bundle: HTTP ' + r.status); return r.arrayBuffer(); });
+            return bytes.then(function (buf) {
+              if (!astc) return buf;
+              if (isFile) throw new Error('This GPU needs the ASTC version of the scene, which a page opened from disk cannot load. Open the hosted demo page instead.');
+              var pu = u.split('?')[0].replace(/\.bitymi$/, '.astcpatch');
+              return real(pu).then(function (r) {
+                if (!r.ok) throw new Error('ASTC patch: HTTP ' + r.status); return r.arrayBuffer();
+              }).then(function (p) { return applyPatch(buf, p); });
+            });
+          }).then(function (b) {
+            return new Response(b, { status: 200, headers: { 'Content-Type': 'application/octet-stream',
+                                                             'Content-Length': String(b.byteLength) } });
+          });
+        };
+        if (!isFile) return;
+        document.addEventListener('DOMContentLoaded', function () {
+          var o = document.createElement('div'); o.id = 'pick-bundle';
+          o.innerHTML = '<div class="pb"><h2>Choose the scene file</h2>' +
+            '<p>This page was opened from your disk, and browsers do not let a local page read ' +
+            'other files on its own. Pick <b>' + name + '</b> from the <b>bundles</b> folder ' +
+            'next to this page and the scene loads as usual.</p>' +
+            '<button id="pb-go">Choose ' + name + '&hellip;</button>' +
+            '<input id="pb-file" type="file" accept=".bitymi" hidden>' +
+            '<p class="pb-m">To skip this step, serve the folder instead: <code>python3 -m http.server</code> ' +
+            'inside it, then open <code>http://localhost:8000</code>.</p></div>';
+          document.body.appendChild(o);
+          var f = document.getElementById('pb-file');
+          document.getElementById('pb-go').onclick = function () { f.click(); };
+          f.onchange = function () {
+            var x = f.files[0]; if (!x) return;
+            if (x.name !== name) { o.querySelector('h2').textContent = 'That was ' + x.name + '; please choose ' + name; return; }
+            x.arrayBuffer().then(function (b) { o.remove(); give(b); });
+          };
+        });
+      })();
+    </script>
+    <style>
+      #pick-bundle{position:fixed; inset:0; z-index:10001; display:flex; align-items:center; justify-content:center;
+        background:rgba(12,14,18,.92); color:#eee; font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+      #pick-bundle .pb{max-width:34rem; padding:1.6rem 1.8rem; border:1px solid #333; border-radius:12px; background:#15181d}
+      #pick-bundle h2{margin:0 0 .5rem; font-size:1.2rem}
+      #pick-bundle p{margin:.4rem 0; color:#c8c8c8}
+      #pick-bundle button{margin-top:.6rem; font:inherit; font-weight:600; padding:.6rem 1.1rem; border-radius:8px;
+        border:1px solid #e8654f; background:#e8654f; color:#fff; cursor:pointer}
+      #pick-bundle .pb-m{font-size:.85rem; color:#999; margin-top:1rem}
+      #pick-bundle code{font-family:ui-monospace,Menlo,monospace; font-size:.85em; color:#9ecbff}
+    </style>
+    <script type="module" crossorigin src="./assets/index-b29e05d0.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/camera-a6ffe3b0.js">
+    <link rel="modulepreload" crossorigin href="./assets/camera-control-04327866.js">
+    <link rel="modulepreload" crossorigin href="./assets/gl-renderer-945d17ce.js">
+    <link rel="stylesheet" href="./assets/camera-control-799ac69b.css">
+        <style>
+      #diag{position:fixed; left:0; right:0; top:0; z-index:10000; max-height:100%; overflow:auto;
+        padding:1rem 1.2rem; background:#111; color:#eee; border-bottom:1px solid #333;
+        font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+      #diag[hidden]{display:none}
+      #diag h2{margin:0 0 .5rem; font-size:1.1rem}
+      #diag code{font-family:ui-monospace,Menlo,monospace; font-size:.82rem; color:#9ecbff;
+        display:block; white-space:pre-wrap; word-break:break-word; margin:.4rem 0 .8rem}
+      #diag button{font:inherit; padding:.45rem .9rem; border-radius:7px; border:1px solid #555;
+        background:#1d1d1d; color:#eee; cursor:pointer}
+      #diag button:hover{border-color:#888}
+      #diag .muted{color:#999; font-size:.88rem}
+    </style>
+  </head>
+  <body>
+    <div id="ui-panel-container" class="ui-panel">
+      <button id="load-button" class="ui-button">📂 Load .ply or .bitymi</button>
+      <div id="quick-links" class="ui-links"></div>
+    </div>
+    <canvas id="webgpu-canvas"></canvas>
+    
+        <div id="diag" hidden>
+      <h2 id="diag-title">Viewer diagnostics</h2>
+      <code id="diag-body"></code>
+      <button id="diag-pick">Choose a .bitymi or .ply file&hellip;</button>
+      <p class="muted">Copy the block above if the scene does not appear.</p>
+      <input id="diag-file" type="file" accept=".bitymi,.ply" hidden>
+    </div>
+    <script>
+      /* The bundled viewer only tests `navigator.gpu === undefined`. When the object
+         exists but requestAdapter() resolves to null, the next line throws, so the
+         load button never gets its handler and no bundle is ever fetched: a blank
+         page with a dead button. Report what actually happened, and keep the file
+         picker working on its own. */
+      (function () {
+        const lines = [], el = (id) => document.getElementById(id);
+        const show = (title) => {
+          el('diag-title').textContent = title;
+          el('diag-body').textContent = lines.join('\n');
+          el('diag').hidden = false;
+        };
+        window.addEventListener('error', (e) => {
+          lines.push('uncaught: ' + (e.message || e.error));
+          show('The viewer stopped with an error');
+        });
+        window.addEventListener('unhandledrejection', (e) => {
+          lines.push('rejected: ' + (e.reason && (e.reason.message || e.reason)));
+          show('The viewer stopped with an error');
+        });
+        el('diag-pick').onclick = () => el('diag-file').click();
+        el('diag-file').onchange = () => {
+          const f = el('diag-file').files[0]; if (!f) return;
+          lines.push('picked ' + f.name + ' (' + (f.size/1048576).toFixed(1) + ' MB) — the bundled renderer must be working for this to draw');
+          show('File chosen');
+        };
+        (async () => {
+          lines.push('userAgent: ' + navigator.userAgent);
+          const u = new URLSearchParams(location.search).get('bundle');
+          lines.push('bundle param: ' + (u || '(none)'));
+          if (!('gpu' in navigator)) { lines.push('navigator.gpu: MISSING'); return show('This browser has no WebGPU'); }
+          let a = null;
+          try { a = await navigator.gpu.requestAdapter(); }
+          catch (e) { lines.push('requestAdapter threw: ' + e.message); return show('WebGPU could not start'); }
+          if (!a) { lines.push('requestAdapter() returned null — no GPU adapter offered'); return show('No GPU adapter'); }
+          const feats = [...a.features];
+          lines.push('adapter features: ' + feats.join(', '));
+          const bc = feats.includes('texture-compression-bc');
+          lines.push('texture-compression-bc: ' + (bc ? 'yes' : 'NO — BC7 atlases cannot be sampled on this GPU'));
+          lines.push('texture-compression-astc: ' + (feats.includes('texture-compression-astc') ? 'yes' : 'no'));
+          if (u && location.protocol !== 'file:') {
+            try { const r = await fetch(u, {method:'HEAD'}); lines.push('bundle HEAD: ' + r.status + ' ' + (r.headers.get('content-length')||'?') + ' bytes'); }
+            catch (e) { lines.push('bundle fetch failed: ' + e.message); }
+          }
+          if (!bc && !feats.includes('texture-compression-astc')) show('This GPU supports neither BC7 nor ASTC textures');
+          else setTimeout(() => { if (!document.querySelector('canvas')?.getContext) show('Viewer diagnostics'); }, 4000);
+        })();
+      })();
+    </script>
+  </body>
+</html>
