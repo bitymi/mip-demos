@@ -376,8 +376,22 @@
   <p class="small">On the hardware rasterizer ours is fastest in every cell and the lead grows with resolution. On the software path our fragment is more expensive (ray/plane hit plus one texture fetch against one Gaussian evaluation), so at 4K the 3DGS-family renderers are ahead there.</p>
 
   <h3 id="laptop">Apple M3 Pro laptop (WebGPU), frames per second</h3>
-  <!-- LAPTOP_TABLE -->
-  <p class="small">Ours, FastGS and Speedy-Splat through the same WebGPU sort and blend on four scenes at the evaluation resolution, HD and 4K. This table is added in the coming days.</p>
+  <table class="res">
+    <tr><th>scene</th><th>resolution</th><th>ours</th><th>FastGS</th><th>Speedy-Splat</th></tr>
+    <tr><td>garden</td><td>evaluation</td><td><b>297</b></td><td>199</td><td>228</td></tr>
+    <tr><td>room</td><td>evaluation</td><td><b>317</b></td><td>206</td><td>256</td></tr>
+    <tr><td>truck</td><td>evaluation</td><td><b>338</b></td><td>297</td><td><b>338</b></td></tr>
+    <tr><td>drjohnson</td><td>evaluation</td><td><b>442</b></td><td>289</td><td>328</td></tr>
+    <tr><td>garden</td><td>1920 wide</td><td><b>176</b></td><td>137</td><td>159</td></tr>
+    <tr><td>room</td><td>1920 wide</td><td><b>226</b></td><td>145</td><td>178</td></tr>
+    <tr><td>truck</td><td>1920 wide</td><td>123</td><td>121</td><td><b>146</b></td></tr>
+    <tr><td>drjohnson</td><td>1920 wide</td><td><b>241</b></td><td>162</td><td>192</td></tr>
+    <tr><td>garden</td><td>3840 wide</td><td>55</td><td>52</td><td><b>59</b></td></tr>
+    <tr><td>room</td><td>3840 wide</td><td><b>66</b></td><td>41</td><td>49</td></tr>
+    <tr><td>truck</td><td>3840 wide</td><td>35</td><td>34</td><td><b>43</b></td></tr>
+    <tr><td>drjohnson</td><td>3840 wide</td><td><b>67</b></td><td>45</td><td>55</td></tr>
+  </table>
+  <p class="small">MacBook Pro with an Apple M3 Pro, Chrome, WebGPU; FastGS and Speedy-Splat through the same WebGPU sort and blend, measured in the same session as ours. Primitives: ours 149k / 63k / 85k / 66k, FastGS 661k / 207k / 253k / 252k, Speedy-Splat 535k / 119k / 257k / 314k (garden / room / truck / drjohnson). On truck at 1920 and 3840 wide and on garden at 3840 wide our per-fragment cost (ray/plane hit and one texture fetch) outweighs our lower overdraw.</p>
 
 </main>
 <footer class="wrap small" style="padding:2rem 22px; border-top:1px solid var(--line); margin-top:2rem">Anonymous supplement for the ICLR 2027 discussion phase. The page contains no analytics or external scripts.</footer>
