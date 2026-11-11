@@ -254,94 +254,94 @@
   </figure>
 
   <h2 id="demo">Interactive demos, revised viewer</h2>
-  <p class="req">The thirteen submission scenes through the revised viewer. The fragment shader is now compiled without the research-only code paths (clip plane, debug views, per-pixel mip modes), which renders the same image and runs 1.3&ndash;1.5&times; faster on an Apple M3 Pro than the viewer used for the submission numbers. Two buttons in the top right toggle the baked <b>Texture</b> and the screen-space <b>Low-pass</b> fallback of the kernel. Bundles are fetched from the original page.</p>
+  <p class="req">The thirteen submission scenes through the revised viewer. The fragment shader is now compiled without the research-only code paths (clip plane, debug views, per-pixel mip modes), which renders the same image and runs 1.3&ndash;1.5&times; faster on an Apple M3 Pro than the viewer used for the submission numbers. Two buttons in the top right toggle the baked <b>Texture</b> and the screen-space <b>Low-pass</b> fallback of the kernel. The bundles are the paper's models (block-dictionary BC7 atlases; phones receive an ASTC patch).</p>
   <figure>
     <div class="demogrid">
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/garden_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/garden_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/garden.jpg" alt="Garden rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Garden</div>
           <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/bicycle_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/bicycle_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/bicycle.jpg" alt="Bicycle rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Bicycle</div>
           <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/flowers_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/flowers_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/flowers.jpg" alt="Flowers rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Flowers</div>
           <div class="dl-meta">62&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/stump_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/stump_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/stump.jpg" alt="Stump rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Stump</div>
           <div class="dl-meta">32&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/treehill_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/treehill_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/treehill.jpg" alt="Treehill rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Treehill</div>
           <div class="dl-meta">58&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/room_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/room_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/room.jpg" alt="Room rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Room</div>
           <div class="dl-meta">16&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/counter_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/counter_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/counter.jpg" alt="Counter rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Counter</div>
           <div class="dl-meta">17&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/kitchen_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/kitchen_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/kitchen.jpg" alt="Kitchen rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Kitchen</div>
           <div class="dl-meta">24&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/bonsai_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/bonsai_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/bonsai.jpg" alt="Bonsai rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Bonsai</div>
           <div class="dl-meta">22&nbsp;MB &middot; Mip-NeRF 360</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/train_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/train_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/train.jpg" alt="Train rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Train</div>
           <div class="dl-meta">28&nbsp;MB &middot; Tanks &amp; Temples</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/truck_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/truck_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/truck.jpg" alt="Truck rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Truck</div>
           <div class="dl-meta">27&nbsp;MB &middot; Tanks &amp; Temples</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/drjohnson_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/drjohnson_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/drjohnson.jpg" alt="Dr Johnson rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Dr Johnson</div>
           <div class="dl-meta">20&nbsp;MB &middot; Deep Blending</div>
         </div>
       </a>
-      <a class="demolink" href="viewer/index.html?bundle=https://bitymi.github.io/bundles/playroom_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
+      <a class="demolink" href="viewer/index.html?bundle=../bundles/playroom_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
         <img class="dl-thumb" loading="lazy" src="static/images/demos/playroom.jpg" alt="Playroom rendered in the browser from the baked texture atlas">
         <div class="dl-body">
           <div class="dl-title">Playroom</div>
