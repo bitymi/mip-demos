@@ -213,15 +213,15 @@
     <h1 class="title">Bake It Till You Make It</h1>
     <p class="subtitle">Ultrafast Spatial Texture-Atlas Splatting</p>
     <p class="anon">Anonymous authors &middot; ICLR 2027 submission &middot; material added during the discussion phase (November 2026)</p>
-    <p class="note">The supplementary demos that accompanied the submission are unchanged at <a href="https://bitymi.github.io/">the original page</a>. This page holds only what was added in response to the reviews. No visitor tracking.</p>
+    <p class="note">The supplementary demos of the submission are unchanged at <a href="https://bitymi.github.io/">the original page</a>. This page holds only what was added in response to the reviews. No visitor tracking.</p>
   </div>
 </header>
 <main class="wrap">
 
   <h2 id="guide">Where each question is addressed</h2>
   <ul class="highlights">
-    <li><b>Reviewer STWD</b> (common hardware backend, renderer labels): <a href="#results">HD and 4K on one hardware rasterizer</a>. The per-component speed decomposition and the matched-storage comparison will appear in the revised manuscript.</li>
-    <li><b>Reviewer 7Qhu</b> (lower-tier GPUs and mobile devices): <a href="#laptop">laptop results</a> and the <a href="#demo">interactive demos</a>, which also run on phones with WebGPU.</li>
+    <li><b>Reviewer STWD</b>: the per-component speed decomposition, the matched-storage comparison and the kernel statistics will appear in the revised manuscript.</li>
+    <li><b>Reviewer 7Qhu</b> (lower-tier GPUs): <a href="#laptop">laptop results</a>.</li>
     <li><b>Reviewer NcgU</b> (mipmapping, resolutions, GPU classes): <a href="#mip">mip-chain demos</a>, <a href="#results">HD and 4K</a> and <a href="#laptop">laptop results</a>.</li>
   </ul>
   <p class="small">All results on this page will be included in the revised manuscript.</p>
@@ -256,104 +256,6 @@
         <div class="dl-body">
           <div class="dl-title">Dr Johnson &middot; mip chain</div>
           <div class="dl-meta">27&nbsp;MB &middot; +6 MB of levels &middot; opens anisotropic</div>
-        </div>
-      </a>
-    </div>
-  </figure>
-
-  <h2 id="demo">Interactive demos, revised viewer</h2>
-  <p class="req">The thirteen submission scenes through the revised viewer. The fragment shader is now compiled without the research-only code paths (clip plane, debug views, per-pixel mip modes), which renders the same image and runs 1.3&ndash;1.5&times; faster on an Apple M3 Pro than the viewer used for the submission numbers. Two buttons in the top right toggle the baked <b>Texture</b> and the screen-space <b>Low-pass</b> fallback of the kernel. The bundles are the paper's models (block-dictionary BC7 atlases; phones receive an ASTC patch).</p>
-  <figure>
-    <div class="demogrid">
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/garden_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/garden.jpg" alt="Garden rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Garden</div>
-          <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/bicycle_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/bicycle.jpg" alt="Bicycle rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Bicycle</div>
-          <div class="dl-meta">50&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/flowers_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/flowers.jpg" alt="Flowers rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Flowers</div>
-          <div class="dl-meta">62&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/stump_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/stump.jpg" alt="Stump rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Stump</div>
-          <div class="dl-meta">32&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/treehill_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/treehill.jpg" alt="Treehill rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Treehill</div>
-          <div class="dl-meta">58&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/room_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/room.jpg" alt="Room rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Room</div>
-          <div class="dl-meta">16&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/counter_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/counter.jpg" alt="Counter rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Counter</div>
-          <div class="dl-meta">17&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/kitchen_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/kitchen.jpg" alt="Kitchen rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Kitchen</div>
-          <div class="dl-meta">24&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/bonsai_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/bonsai.jpg" alt="Bonsai rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Bonsai</div>
-          <div class="dl-meta">22&nbsp;MB &middot; Mip-NeRF 360</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/train_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/train.jpg" alt="Train rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Train</div>
-          <div class="dl-meta">28&nbsp;MB &middot; Tanks &amp; Temples</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/truck_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/truck.jpg" alt="Truck rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Truck</div>
-          <div class="dl-meta">27&nbsp;MB &middot; Tanks &amp; Temples</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/drjohnson_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/drjohnson.jpg" alt="Dr Johnson rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Dr Johnson</div>
-          <div class="dl-meta">20&nbsp;MB &middot; Deep Blending</div>
-        </div>
-      </a>
-      <a class="demolink" href="viewer/index.html?bundle=../bundles/playroom_e3rdraw.bitymi&amp;lean=1" target="_blank" rel="noopener">
-        <img class="dl-thumb" loading="lazy" src="static/images/demos/playroom.jpg" alt="Playroom rendered in the browser from the baked texture atlas">
-        <div class="dl-body">
-          <div class="dl-title">Playroom</div>
-          <div class="dl-meta">16&nbsp;MB &middot; Deep Blending</div>
         </div>
       </a>
     </div>
